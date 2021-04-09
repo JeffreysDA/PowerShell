@@ -7,7 +7,8 @@ Credential option to create Credential files on non-Windows machines.
 SUMMARY:
 Exclusive Credential files can only be used on the computer and account that the user was logged into when they were created, while Shared Credential files can be 
 used by any account on any computer as long as you have the Shared Credential files Decryption key. You can use Credential Reader.ps1 to verify that the Credentials 
-have the desired information as well as to see how to import each Credential type and which commands are used to extract the username and password from each Credential type.
+have the desired information as well as to see how to import each Credential type and which commands are used to extract the username and password from each Credential
+type.
 
 
 
