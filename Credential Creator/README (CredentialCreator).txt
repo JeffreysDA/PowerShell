@@ -6,7 +6,7 @@ Credential option to create Credential files on non-Windows machines.
 
 SUMMARY:
 Exclusive Credential files can only be used on the computer and account that the user was logged into when they were created, while Shared Credential files can be 
-used by any account on any computer as long as you have the Shared Credential files Decryption key. You can use Credential Reader.ps1 to verify that the Credentials 
+used by any account on any computer if you have the Shared Credential files Decryption key. You can use Credential Reader.ps1 to verify that the Credentials 
 have the desired information as well as to see how to import each Credential type and which commands are used to extract the username and password from each Credential
 type.
 
@@ -14,7 +14,7 @@ type.
 
 DETAILED:
 Exclusive Credentials are created in almost the exact same way that that PSCredentials are created, except that the information is exported into an .xml file so that it 
-can be used in a number of scripts. Being as the creation process is nearly identical to the native PowerShell function 'Get-Credential' the Username is stored as plain 
+can be used in several scripts. Being as the creation process is nearly identical to the native PowerShell function 'Get-Credential' the Username is stored as plain 
 text, while the Password is encrypted using the Windows Data Protection API (DPAPI). DPAPI uses a symmetric encryption/decryption key that is created using system 
 information that is exclusive to the machine and account that the user is logged into. This means that just like a standard PSCredential, an Exclusive Credential file 
 can only be used on the computer account that it was originally created on.
@@ -32,3 +32,17 @@ directly from the Shared Credential file and decrypted on the fly using the key 
 
 It is up to you how you store the key. Without it, the password stored in the Shared Credential cannot be accessed, but anyone who has access to the key can easily 
 decrypt the Shared Credential that it goes to.
+
+
+
+ADDITIONAL OPTIONS:
+When creating credentials, there are two optional checkboxes that you can take advantage of.
+
+"Retain Encryption Key for additional Credential Creations"
+  When checked, this option allows the Credential Creator to remember the randomly generated encryption key that gets created with the credential you are creating.
+  The Credential Creator then uses the same encryption key for each successive credential creation until you uncheck the box or close the credential creator.
+
+
+"Use an existing Encryption Key for Credential Creations"
+  When checked, this option allows the Credential Creator to use a previously generated encryption key that you choose for the credential you are creating.
+  The Credential Creator then uses the same encryption key for each successive credential creation until you uncheck the box or close the credential creator.

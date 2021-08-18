@@ -1,7 +1,7 @@
 ﻿<#Variable to import the Credential files and key#>
-$ExcCredFile = "PLACE FULL PATH TO EXCLUSIVE CREDENTIAL FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\ExclusiveCredential_MyPersonalCredentials.xml"
-$SharedCredFile = "PLACE FULL PATH TO SHARED CREDENTIAL FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\SharedCredential_MySharedCredentials.xml"
-$KeyFile = "PLACE FULL PATH TO SHARED CREDENTIAL DECRYPTION KEY FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\SharedCredential_MySharedCredentials.key"
+$ExcCredFile = "PLACE FULL PATH TO EXCLUSIVE CREDENTIAL FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\ECred_MyPersonalCredentials.xml"
+$SharedCredFile = "PLACE FULL PATH TO SHARED CREDENTIAL FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\SCred_MySharedCredentials.xml"
+$KeyFile = "PLACE FULL PATH TO SHARED CREDENTIAL DECRYPTION KEY FILE HERE" #EXAMPLE: "C:\Users\User\Desktop\SCred_MySharedCredentials.key"
 
 
 

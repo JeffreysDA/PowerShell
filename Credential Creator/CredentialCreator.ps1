@@ -1,7 +1,7 @@
 ﻿<#
 AUTHOR  : Duncan Jeffreys
 CREATED : 02/09/2021
-UPDATED : 07/01/2021
+UPDATED : 08/13/2021
 COMMENTS: 
 Easy to use GUI to allow the creation of username and password credential files, that can be either exclusive to the host, or shared and used on any account and machine.
 #>
@@ -15,7 +15,7 @@ $OutputFolder = "$env:USERPROFILE\Desktop\Credentials"
 
 <#Script Variables#>
 [String]$Script:ScriptName = 'Credential Creator'
-[String]$Script:ScriptVersion = '2.1'
+[String]$Script:ScriptVersion = '2.2'
 [String]$Script:LastKeyUsed = $Null
 
 <#Custom function to display a file browser and return the selected files path.#>
@@ -76,7 +76,10 @@ Function Create-Credential {
   If ($CredentialType -eq 'Exclusive') {
     <#Check if custom Credential name was specified#>
     If ($CredentialName -eq $Null -or $CredentialName -eq '') {
-      $CredentialName = "${env:USERNAME}_${env:COMPUTERNAME}"
+      $CredentialName = "${env:COMPUTERNAME}_${env:USERNAME}"
+    }
+    Else {
+      $CredentialName = "${env:COMPUTERNAME}_${env:USERNAME}_$CredentialName"
     }
 
     <#Convert the plain text password into a secure string#>
@@ -85,10 +88,10 @@ Function Create-Credential {
     <#Create a PSCredential object using the username and securestring password, 
     then export that credential object into a xml file.#>
     [PSCredential]$Credential = New-Object System.Management.Automation.PSCredential($Username, $SecPass) |
-      Export-CliXml -Path "$OutputFolder\ExclusiveCredential_$CredentialName.xml"
+      Export-CliXml -Path "$OutputFolder\ECred_$CredentialName.xml"
 
     <#Set new credential path as a variable to test the path for confirmation#>
-    $CredentialFile = "$OutputFolder\ExclusiveCredential_$CredentialName.xml"
+    $CredentialFile = "$OutputFolder\ECred_$CredentialName.xml"
 
     <#Verify that the Credential file was created, then display a message to the user letting them know the results#>
     If (Test-Path $CredentialFile -PathType Leaf) {
@@ -110,7 +113,7 @@ Function Create-Credential {
     <#Check to see if we need to Create a new Encryption Key and Retain the file for additional usage#>
     If ($KeyFile -eq $Null -or $KeyFile -eq '') {
       <#Creating empty Key file#>
-      $KeyFile = "$OutputFolder\SharedCredential_$CredentialName.key"
+      $KeyFile = "$OutputFolder\SCred_$CredentialName.key"
 
       <#Randomly generate AES key string. Bytes are 1/8 the bit count of the AES encryption type, and can only be 16, 24, or 32.
       So 16Bytes = 128Bit AES Encryption, 24Bytes = 192Bit AES Encryption, and 32Bytes = 256Bit AES Encryption#>
@@ -140,10 +143,10 @@ Function Create-Credential {
         }
 
     <#Inject custom object into xml file#>
-    $Credential | Export-CliXml -Path "$OutputFolder\SharedCredential_$CredentialName.xml"
+    $Credential | Export-CliXml -Path "$OutputFolder\SCred_$CredentialName.xml"
 
     <#Set new credential path as a variable to test the path for confirmation#>
-    $CredentialFile = "$OutputFolder\SharedCredential_$CredentialName.xml"
+    $CredentialFile = "$OutputFolder\SCred_$CredentialName.xml"
 
     <#Verify that Credential file and Key file were created, then display a message to the user letting them know the results#>
     If ((Test-Path $CredentialFile -PathType Leaf) -and (Test-Path $KeyFile -PathType Leaf)) {
@@ -241,7 +244,7 @@ Encryption Key file with additional Credential creations.#>
 $ChkBox_RetainKey = New-Object System.Windows.Forms.CheckBox
 $ChkBox_RetainKey.Location = New-Object System.Drawing.Size(15,135)
 $ChkBox_RetainKey.Size = New-Object System.Drawing.Size(255,30)
-$ChkBox_RetainKey.Text = 'Retain Encrytion Key for additional Credential Creations'
+$ChkBox_RetainKey.Text = 'Retain Encryption Key for additional Credential Creations'
 $Form_Cred.Controls.Add($ChkBox_RetainKey)
 
 
@@ -250,7 +253,7 @@ specific Encryption Key file with Credential creations.#>
 $ChkBox_SelectKey = New-Object System.Windows.Forms.CheckBox
 $ChkBox_SelectKey.Location = New-Object System.Drawing.Size(15,165)
 $ChkBox_SelectKey.Size = New-Object System.Drawing.Size(255,30)
-$ChkBox_SelectKey.Text = 'Use an existing Encrytion Key for Credentials Creations'
+$ChkBox_SelectKey.Text = 'Use an existing Encryption Key for Credential Creations'
 $Form_Cred.Controls.Add($ChkBox_SelectKey)
 
 
